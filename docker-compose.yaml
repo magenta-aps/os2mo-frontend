@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # target: frontend build the dynamically reloading frontend
+      target: frontend
+    environment:
+      # `vue-cli-service serve` will proxy requests to mo, as defined in:
+      # `frontend/vue.config.js`.
+      BASE_URL: http://mo:80
+    volumes:
+      # To reload on file changes, we mount the current folder into `/code`.
+      # However we do not want node_modules on the host machine, so we create
+      # an additional volume for it.
+      - ./frontend:/app/frontend
+      - ./nginx.conf.template:/app/docker
+      - /app/frontend/node_modules
+    restart: unless-stopped
+    networks:
+      - os2mo_default
+
+networks:
+  os2mo_default:
+    external: true
