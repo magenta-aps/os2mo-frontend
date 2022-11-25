@@ -5,9 +5,14 @@ default:
   # All jobs are interruptible by default
   interruptible: true
 
+variables:
+  IMAGE_SHA: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
+  RELEASE_REGISTRY_IMAGE: index.docker.io/magentaaps/os2mo-frontend
+
 stages:
   - sync
   - lint
+  - build
   - release
 
 # Conditions
@@ -33,7 +38,10 @@ workflow:
 
 include:
   - project: labs/salt-automation
-    file: gitlab-ci-templates/common/conventional-commits.v1.yml
+    file:
+      - gitlab-ci-templates/common/conventional-commits.v1.yml
+      - gitlab-ci-templates/common/docker-build-meta.v1.yml
+      - gitlab-ci-templates/common/docker-release.v1.yml
   - project: labs/salt-automation
     file: gitlab-ci-templates/common/pre-commit.v1.yml
     rules:
@@ -55,3 +63,13 @@ Do not interrupt:
   rules:
     - when: manual
       allow_failure: true
+
+
+# Build
+#######
+Build:
+  extends:
+    - .build-docker
+  variables:
+    CI_IMAGE: ${IMAGE_SHA}
+    BUILD_DOCKER_EXTRA_FLAGS: --build-arg=COMMIT_SHA=${CI_COMMIT_SHA} --build-arg=COMMIT_TAG=${CI_COMMIT_TAG}
