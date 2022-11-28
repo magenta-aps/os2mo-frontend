@@ -150,7 +150,7 @@ export default {
       if (this.formValid) {
         this.isLoading = true
 
-        return Service.post("/details/terminate", this.payload)
+        return Service.post("/ou/{uuid}/terminate", this.payload)
           .then((response) => {
             this.isLoading = false
             this.$refs.functionTerminate.hide()
