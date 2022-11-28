@@ -10,6 +10,9 @@ variables:
   TEST_IMAGE_SHA: ${CI_REGISTRY_IMAGE}/test:${CI_COMMIT_SHA}
   RELEASE_REGISTRY_IMAGE: index.docker.io/magentaaps/os2mo-frontend
 
+  PRODUCT: os2mo
+  COMPONENT: os2mo-frontend
+
 stages:
   - sync
   - lint
@@ -49,7 +52,8 @@ include:
       - gitlab-ci-templates/common/conventional-commits.v1.yml
       - gitlab-ci-templates/common/docker-build-meta.v1.yml
       - gitlab-ci-templates/common/docker-release.v1.yml
-      - gitlab-ci-templates/common/config-updater-meta.v1.yml
+      - gitlab-ci-templates/common/config-updater-salt.v1.yml
+      - gitlab-ci-templates/common/config-updater-flux.v1.yml
   - project: labs/salt-automation
     file: gitlab-ci-templates/common/pre-commit.v1.yml
     rules:
@@ -107,46 +111,3 @@ Unit-test:
       - $CI_PROJECT_DIR/coverage
   rules:
     - <<: *if-merge-request
-
-
-# Deploy
-########
-# Flux
-Deploy to Flux Dev:
-  extends: .release-to-dev
-  needs:
-    - Release version
-  variables:
-    ENDPOINT: os2mo/flux/os2mo-frontend/update-dev
-
-Deploy to Flux Test:
-  extends: .release-to-test
-  needs: []
-  variables:
-    ENDPOINT: os2mo/flux/os2mo-frontend/update-test
-
-Deploy to Flux Prod:
-  extends: .release-to-prod
-  needs: []
-  variables:
-    ENDPOINT: os2mo/flux/os2mo-frontend/update-prod
-
-# Salt
-Deploy to Salt Dev:
-  extends: .release-to-dev
-  needs:
-    - Release version
-  variables:
-    ENDPOINT: os2mo/salt/os2mo-frontend/update-dev
-
-Deploy to Salt Test:
-  extends: .release-to-test
-  needs: []
-  variables:
-    ENDPOINT: os2mo/salt/os2mo-frontend/update-test
-
-Deploy to Salt Prod:
-  extends: .release-to-prod
-  needs: []
-  variables:
-    ENDPOINT: os2mo/salt/os2mo-frontend/update-prod
