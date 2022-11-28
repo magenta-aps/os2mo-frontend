@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2017-2020 Magenta ApS
+# SPDX-License-Identifier: MPL-2.0
+
+.cache
+
+# Bower/Grunt/Node stuff
+node_modules/
+.DS_Store
+/frontend/dist/
+/frontend/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test artifacts
+testcafe-artifacts
+.pytest_cache
+frontend/coverage/
+.cov-report/*
+!.cov-report/.gitkeep
+
+# Local overrides
+docker-compose.override.yml
