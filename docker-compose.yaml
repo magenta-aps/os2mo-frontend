@@ -3,6 +3,16 @@
 # SPDX-License-Identifier: MPL-2.0
 
 services:
+  proxy:
+    image: nginx:1
+    volumes:
+      - ./dev-environment/nginx-proxy.conf.template:/etc/nginx/templates/default.conf.template:ro
+    ports:
+      - "127.0.0.1:5050:80"
+    restart: unless-stopped
+    networks:
+      - os2mo_default
+
   frontend:
     build:
       context: .
