@@ -79,7 +79,6 @@ SPDX-FileCopyrightText: 2017-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
     />
 
     <mo-add-many
-      v-if="show_owner"
       class="btn-manager mt-3"
       v-model="owner"
       :entry-component="entry.owner"
@@ -202,10 +201,6 @@ export default {
     show_seniority() {
       let conf = this.$store.getters["conf/GET_CONF_DB"]
       return conf.show_seniority
-    },
-    show_owner() {
-      let conf = this.$store.getters["conf/GET_CONF_DB"]
-      return conf.show_owner
     },
   },
 

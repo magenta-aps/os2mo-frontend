@@ -149,7 +149,6 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
         @click="navigateToTab('#owner')"
         href="#owner"
         :title="$t('tabs.organisation.owner')"
-        v-if="show_owner"
       >
         <mo-table-detail
           type="ORG_UNIT"
@@ -344,10 +343,6 @@ export default {
       }
 
       return columns
-    },
-
-    show_owner() {
-      return this.orgUnitInfo.user_settings.orgunit.show_owner
     },
 
     ...mapGetters({
