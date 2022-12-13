@@ -45,7 +45,7 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
         required
       />
 
-      <mo-facet-picker facet="org_unit_hierarchy" v-model="entry.org_unit_hierarchy" />
+      <mo-facet-picker v-if="options.length > 1" facet="org_unit_hierarchy" v-model="entry.org_unit_hierarchy" />
     </div>
   </div>
 </template>
@@ -58,6 +58,7 @@ import MoOrganisationUnitPicker from "@/components/MoPicker/MoOrganisationUnitPi
 import MoFacetPicker from "@/components/MoPicker/MoFacetPicker"
 import { MoInputText, MoInputDateRange } from "@/components/MoInput"
 import MoEntryBase from "./MoEntryBase"
+import { Facet } from "@/store/actions/facet"
 
 export default {
   extends: MoEntryBase,
@@ -132,6 +133,19 @@ export default {
         return_val.push(entry.uuid)
       }
       return return_val
+    },
+
+    options: {
+      get() {
+        let facet = this.$store.getters[Facet.getters.GET_FACET]("org_unit_hierarchy")
+        let result = [{ value: null, text: this.$t("shared.entire_organisation") }]
+        if ("classes" in facet) {
+          for (var cl of facet.classes) {
+            result.push({ value: cl.uuid, text: cl.name })
+          }
+        }
+        return result
+      },
     },
   },
 
