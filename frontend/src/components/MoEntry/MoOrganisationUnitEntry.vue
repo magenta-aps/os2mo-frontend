@@ -44,6 +44,11 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
         :filter_function="filter_on_owner"
         required
       />
+
+      <mo-facet-picker
+        facet="org_unit_hierarchy"
+        v-model="entry.org_unit_hierarchy"
+      />
     </div>
   </div>
 </template>
