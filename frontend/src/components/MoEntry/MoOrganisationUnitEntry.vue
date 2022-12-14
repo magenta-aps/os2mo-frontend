@@ -55,7 +55,7 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
 </template>
 
 <script>
-/** 
+/**
  * A organisation unit entry component.
  */
 import MoOrganisationUnitPicker from "@/components/MoPicker/MoOrganisationUnitPicker"
@@ -68,7 +68,7 @@ export default {
   extends: MoEntryBase,
   mixins: [FacetOrgUnitHierarchy],
   name: "MoOrganisationUnitEntry",
-  
+
   components: {
     MoInputDateRange,
     MoOrganisationUnitPicker,

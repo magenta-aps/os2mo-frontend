@@ -11,7 +11,10 @@ SPDX-FileCopyrightText: 2017-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
             </h4>
             <div v-if="facetOrgUnitHierarchy.length > 1">
               <span>{{ $t("shared.belongs_to") }}:</span>
-              <b-form-select v-model="orgUnitHierarchy" :options="facetOrgUnitHierarchy" />
+              <b-form-select
+                v-model="orgUnitHierarchy"
+                :options="facetOrgUnitHierarchy"
+              />
             </div>
             <div id="tree-wrapper">
               <mo-org-tree-view ref="orgtree" v-model="selected" />
