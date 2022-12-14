@@ -9,9 +9,9 @@ SPDX-FileCopyrightText: 2017-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
               <icon name="folder-open" />
               {{ $t("common.overview") }}
             </h4>
-            <div v-if="options.length > 1">
+            <div v-if="facetOrgUnitHierarchy.length > 1">
               <span>{{ $t("shared.belongs_to") }}:</span>
-              <b-form-select v-model="orgUnitHierarchy" :options="options" />
+              <b-form-select v-model="orgUnitHierarchy" :options="facetOrgUnitHierarchy" />
             </div>
             <div id="tree-wrapper">
               <mo-org-tree-view ref="orgtree" v-model="selected" />
@@ -37,8 +37,11 @@ import { Facet } from "@/store/actions/facet"
 import { Organisation } from "@/store/actions/organisation"
 import { mapState } from "vuex"
 import bFormSelect from "bootstrap-vue/es/components/form-select/form-select"
+import FacetOrgUnitHierarchy from "@/mixins/FacetOrgUnitHierarchy"
 
 export default {
+  mixins: [FacetOrgUnitHierarchy],
+
   components: {
     MoOrganisationUnitWorkflows,
     MoOrgTreeView,
@@ -69,19 +72,6 @@ export default {
       },
       get() {
         return this.route.params.uuid
-      },
-    },
-
-    options: {
-      get() {
-        let facet = this.$store.getters[Facet.getters.GET_FACET]("org_unit_hierarchy")
-        let result = [{ value: null, text: this.$t("shared.entire_organisation") }]
-        if ("classes" in facet) {
-          for (var cl of facet.classes) {
-            result.push({ value: cl.uuid, text: cl.name })
-          }
-        }
-        return result
       },
     },
 
