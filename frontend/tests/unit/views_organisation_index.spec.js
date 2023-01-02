@@ -84,7 +84,7 @@ describe("views/organisation/index.vue", () => {
 
   it("should fetch the facet `org_unit_hierarchy` when mounted", async () => {
     const env = mountComponent()
-    expect(env.wrapper.vm.options).toEqual(env.expectedDropdownItems)
+    expect(env.wrapper.vm.facetOrgUnitHierarchy).toEqual(env.expectedDropdownItems)
   })
 
   it("should reset the route when the `orgUnitHierarchy` filter is changed", async () => {

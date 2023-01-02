@@ -44,6 +44,12 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
         :filter_function="filter_on_owner"
         required
       />
+
+      <mo-facet-picker
+        v-if="facetOrgUnitHierarchy.length > 1"
+        facet="org_unit_hierarchy"
+        v-model="entry.org_unit_hierarchy"
+      />
     </div>
   </div>
 </template>
@@ -56,10 +62,11 @@ import MoOrganisationUnitPicker from "@/components/MoPicker/MoOrganisationUnitPi
 import MoFacetPicker from "@/components/MoPicker/MoFacetPicker"
 import { MoInputText, MoInputDateRange } from "@/components/MoInput"
 import MoEntryBase from "./MoEntryBase"
+import FacetOrgUnitHierarchy from "@/mixins/FacetOrgUnitHierarchy"
 
 export default {
   extends: MoEntryBase,
-
+  mixins: [FacetOrgUnitHierarchy],
   name: "MoOrganisationUnitEntry",
 
   components: {
