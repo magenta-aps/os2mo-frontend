@@ -47,6 +47,7 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
         class="select-association"
         facet="association_type"
         v-model="entry.association_type"
+        :filter_function="filter_remove_none_published"
         required
       />
     </div>
@@ -234,6 +235,18 @@ export default {
     facet_uuid_to_label(uuid) {
       let facet_getter = this.$store.getters[Facet.getters.GET_FACET]
       return facet_getter(uuid)["description"]
+    },
+
+    /**
+     * Removes all non-published classes from the classData array.
+     *
+     * @param {[]object} classData
+     */
+    filter_remove_none_published(classData) {
+      if (classData === undefined) {
+        return classData
+      }
+      return classData.filter((c) => c !== null && c.published !== "IkkePubliceret")
     },
   },
 }
