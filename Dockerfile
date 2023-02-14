@@ -16,7 +16,7 @@ RUN yarn build
 # script for `vue-cli-service serve` from frontend/package.json
 CMD ["yarn", "dev"]
 
-FROM nginx:1.19@sha256:df13abe416e37eb3db4722840dd479b00ba193ac6606e7902331dcea50f4f1f2
+FROM nginx:1.23@sha256:6650513efd1d27c1f8a5351cbd33edf85cc7e0d9d0fcb4ffb23d8fa89b601ba8
 LABEL org.opencontainers.image.title="OS2mo Frontend" \
       org.opencontainers.image.vendor="Magenta ApS" \
       org.opencontainers.image.licenses="MPL-2.0" \
