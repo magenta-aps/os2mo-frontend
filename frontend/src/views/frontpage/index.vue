@@ -15,13 +15,19 @@ SPDX-FileCopyrightText: 2017-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
     </div>
     <div class="version">
       <div>
-        <a href="https://rammearkitektur.docs.magenta.dk/os2mo/news.html">
+        <a
+          href="https://rammearkitektur.docs.magenta.dk/os2mo/news.html"
+          :title="this.mo_hash"
+        >
           {{ this.mo_version }}
         </a>
       </div>
       <div>
-        <a href="https://mox.readthedocs.io/en/master/dev/news.html">
-          {{ this.lora_version }}
+        <a
+          href="https://mox.readthedocs.io/en/master/dev/news.html"
+          :title="this.dipex_version"
+        >
+          {{ this.dipex_version }}
         </a>
       </div>
     </div>
@@ -45,7 +51,8 @@ export default {
     return {
       menu: [],
       mo_version: null,
-      lora_version: null,
+      mo_hash: null,
+      dipex_version: null,
     }
   },
 
@@ -54,9 +61,15 @@ export default {
 
     Version.get().then((response) => {
       const version_dict = response.data
-      const mo_hash = (version_dict["mo_hash"] || "").substring(0, 8)
-      this.mo_version = `OS2mo ${version_dict["mo_version"]}@${mo_hash}`
-      this.lora_version = `LoRa ${version_dict["lora_version"]}`
+      this.mo_version = `OS2mo ${version_dict["mo_version"]}`
+      this.mo_hash = (version_dict["mo_hash"] || "").substring(0, 8)
+      if (
+        version_dict["dipex_version"] !== undefined &&
+        version_dict["dipex_version"] !== null &&
+        version_dict["dipex_version"] !== ""
+      ) {
+        this.dipex_version = `DIPEX ${version_dict["dipex_version"]}`
+      }
     })
   },
 
