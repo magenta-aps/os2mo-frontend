@@ -15,20 +15,10 @@ SPDX-FileCopyrightText: 2017-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
     </div>
     <div class="version">
       <div>
-        <a
-          href="https://rammearkitektur.docs.magenta.dk/os2mo/news.html"
-          :title="this.mo_hash"
-        >
-          {{ this.mo_version }}
-        </a>
+        <span class="text-primary">{{ this.mo_version }}</span>
       </div>
       <div>
-        <a
-          href="https://mox.readthedocs.io/en/master/dev/news.html"
-          :title="this.dipex_version"
-        >
-          {{ this.dipex_version }}
-        </a>
+        <span class="text-primary">{{ this.dipex_version }}</span>
       </div>
     </div>
   </div>
