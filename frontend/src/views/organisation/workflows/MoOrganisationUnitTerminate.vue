@@ -29,7 +29,6 @@ SPDX-FileCopyrightText: 2017-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
       </div>
 
       <div class="mb-3" v-if="org_unit && org_unit.uuid">
-        <p>{{ $t("workflows.organisation.messages.following_will_be_terminated") }}</p>
         <organisation-detail-tabs
           :uuid="org_unit.uuid"
           :org-unit-info="org_unit"

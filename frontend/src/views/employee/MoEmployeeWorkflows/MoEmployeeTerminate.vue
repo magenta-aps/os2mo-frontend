@@ -18,7 +18,6 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
     </div>
 
     <div class="mb-3" v-if="employee">
-      <p>{{ $t("workflows.employee.messages.following_will_be_terminated") }}</p>
       <employee-detail-tabs
         :uuid="employee.uuid"
         :content="details"
