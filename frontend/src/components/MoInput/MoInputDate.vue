@@ -110,6 +110,10 @@ export default {
      * disregard timezones and the time-of-day.
      */
     internalValue(newVal) {
+      let conf = this.$store.getters["conf/GET_CONF_DB"]
+      if (conf.datepicker_fix_timezone) {
+        newVal = moment(newVal).utc(true)
+      }
       let modifiedValue = newVal
         ? moment.utc(new Date(newVal)).format("YYYY-MM-DD")
         : null

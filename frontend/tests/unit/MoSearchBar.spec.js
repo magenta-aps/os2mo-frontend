@@ -30,7 +30,13 @@ describe("MoSearchBar.vue", () => {
     localVue.use(VeeValidate)
 
     // Set up mock Vuex store
-    store = new Vuex.Store()
+    store = new Vuex.Store({
+      getters: {
+        "conf/GET_CONF_DB": () => {
+          return { datepicker_fix_timezone: false }
+        },
+      },
+    })
     store.dispatch = jest.fn()
     store.replaceState({ organisation: { uuid: "1234" } })
 
