@@ -50,6 +50,9 @@ SPDX-FileCopyrightText: 2021 Magenta ApS SPDX-License-Identifier: MPL-2.0
               <small>{{ getParentOrgUnitName(result) }}</small>
             </div>
             {{ result.name }}
+            <span v-if="show_employee_birthday"
+              >({{ getEmployeeBirthday(result) }})</span
+            >
             <div v-for="item in result.attrs" :key="item.uuid">
               <small>
                 <b>{{ item.title }}</b>
@@ -85,6 +88,8 @@ export default {
       focused: false,
       value: "",
       results: [],
+      show_employee_birthday:
+        this.$store.getters["conf/GET_CONF_DB"].show_employee_birthday_in_search,
     }
   },
 
@@ -111,6 +116,9 @@ export default {
       if (result.path !== null) {
         return result.path[result.path.length - 2]
       }
+    },
+    getEmployeeBirthday(result) {
+      return result.cpr_no.trim().slice(0, -4)
     },
   },
 }
