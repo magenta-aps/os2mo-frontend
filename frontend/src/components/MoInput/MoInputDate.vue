@@ -111,12 +111,17 @@ export default {
      */
     internalValue(newVal) {
       let conf = this.$store.getters["conf/GET_CONF_DB"]
-      if (conf.datepicker_fix_timezone) {
-        newVal = moment(newVal).utc(true)
-      }
+
       let modifiedValue = newVal
         ? moment.utc(new Date(newVal)).format("YYYY-MM-DD")
         : null
+
+      // TODO: Remove this feature flag when logic have been verified by AAK
+      // .. when verified, replace above equivilant code, with below code
+      if (conf.datepicker_fix_timezone) {
+        modifiedValue = newVal ? moment(newVal).utc(true).format("YYYY-MM-DD") : null
+      }
+
       this.$emit("input", modifiedValue)
     },
   },
