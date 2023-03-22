@@ -77,6 +77,8 @@ export default {
       item: null,
       items: [],
       template: MoSearchBarTemplate,
+      show_employee_birthday:
+        this.$store.getters["conf/GET_CONF_DB"].show_employee_birthday_in_search,
     }
   },
 
@@ -118,8 +120,20 @@ export default {
       let vm = this
       let org = this.$store.state.organisation
       Search.employees(org.uuid, query).then((response) => {
+        // This will change the `Create`-modal select to show employees
+        // formatted like `EmployeeName (EmployeeBirthday)`
+        // https://redmine.magenta-aps.dk/issues/55196
+        if (this.show_employee_birthday) {
+          response.forEach((employee) => {
+            employee.name = this.getNameAndBirthdayString(employee)
+          })
+        }
         vm.items = response
       })
+    },
+
+    getNameAndBirthdayString(employee) {
+      return `${employee.name} (${employee.cpr_no.trim().slice(0, -4)})`
     },
   },
 
