@@ -46,7 +46,7 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
       />
 
       <mo-facet-picker
-        v-if="facetOrgUnitHierarchy.length > 1"
+        v-if="showOrgUnitHierarchy && facetOrgUnitHierarchy.length > 1"
         facet="org_unit_hierarchy"
         v-model="entry.org_unit_hierarchy"
       />
@@ -137,6 +137,10 @@ export default {
         return_val.push(entry.uuid)
       }
       return return_val
+    },
+    showOrgUnitHierarchy() {
+      let conf = this.$store.getters["conf/GET_CONF_DB"]
+      return conf.org_unit_hierarchy_in_create
     },
   },
 
