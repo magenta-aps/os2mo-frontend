@@ -199,9 +199,7 @@ export default {
 
       this.entries.forEach((entry) => {
         entry.org = this.$store.getters["organisation/GET_ORGANISATION"]
-        if (!entry.validity) {
-          entry.validity = this.validity
-        }
+        entry.validity = this.validity
       })
 
       this.isLoading = true
