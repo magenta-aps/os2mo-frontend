@@ -39,6 +39,7 @@
     "V_TERMINATE_UNIT_WITH_CHILDREN_AND_ROLES": "It is not possible to terminate an organizational unit with {roles} and {child_count} subunits",
     "V_TERMINATE_UNIT_WITH_CHILDREN": "It is not possible to terminate an organizational unit with {child_count} subunits.",
     "V_TERMINATE_UNIT_WITH_ROLES": "It is not possible to terminate an organizational unit with {roles}",
+    "V_TERMINATE_UNIT_WITH_ADDRESSES": "It is not possible to terminate an organizational unit with addresses",
     "V_CHANGING_THE_PAST": "It is not possible to make changes before today's date.",
     "E_INVALID_INPUT": "Invalid input.",
     "V_INVALID_ADDRESS_PHONE": "A valid telephone number is required.",
