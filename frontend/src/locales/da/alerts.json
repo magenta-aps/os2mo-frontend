@@ -39,6 +39,7 @@
     "V_TERMINATE_UNIT_WITH_CHILDREN_AND_ROLES": "Kan ikke afslutte en enhed med {roles} og {child_count} underenheder",
     "V_TERMINATE_UNIT_WITH_CHILDREN": "Kan ikke afslutte en enhed med {child_count} underenheder",
     "V_TERMINATE_UNIT_WITH_ROLES": "Kan ikke afslutte en enhed med {roles}",
+    "V_TERMINATE_UNIT_WITH_ADDRESSES": "Kan ikke afslutte en enhed med adresser",
     "V_CHANGING_THE_PAST": "Kan ikke foretage ændringer før dags dato",
     "E_INVALID_INPUT": "Ugyldigt input",
     "V_INVALID_ADDRESS_PHONE": "Feltet skal indeholde et gyldigt telefonnummer.",
