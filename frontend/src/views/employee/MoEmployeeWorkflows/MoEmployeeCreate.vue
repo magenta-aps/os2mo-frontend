@@ -182,12 +182,35 @@ export default {
       "backendValidationError",
     ]),
 
+    isPseudoCPR() {
+      // Check if user is entering an "erstatningspersonnummer" (= a CPR number where the first two digits are between
+      // 61 and 91.)
+      if (this.employee && "cpr_no" in this.employee) {
+        const cprRegExp = /^(\d{2})\d{2}\d{2}[\s|\-]{0,1}\d{4}/
+        const cprDayDigits = this.employee.cpr_no.match(cprRegExp)
+        if (cprDayDigits) {
+          const cprDay = parseInt(cprDayDigits[1])
+          return cprDay >= 61 && cprDay <= 91
+        }
+      }
+    },
+
     disableManualName() {
       // disable when using cpr (as cpr implies a name)
-      return this.employee && "cpr_no" in this.employee
+      if (this.employee && "cpr_no" in this.employee) {
+        // Keep name editing enabled if user is entering a "pseudo" CPR.
+        // If the user is entering a "pseudo" CPR, it is assumed to be used for creating MO employees that represent
+        // robot users, etc. In that case, name editing should keep being available.
+        return !this.isPseudoCPR
+      }
     },
 
     enableCPR() {
+      // Keep CPR field enabled (and visible) if user is entering a "pseudo" CPR
+      if (this.isPseudoCPR) {
+        return true
+      }
+
       // Keep enabled if name is disabled.
       // Otherwise, disable if we have a non-empty name.
       return (

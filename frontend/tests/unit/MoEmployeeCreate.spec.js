@@ -61,6 +61,12 @@ describe("MoEmployeeCreate.vue", () => {
     }
   }
 
+  const fillCprInput = async (wrapper, data) => {
+    const cpr = wrapper.findComponent(MoCpr)
+    cpr.setData({ result: data })
+    await wrapper.vm.$validator.validateAll()
+  }
+
   it('should not call "create employee" API when an empty form is submitted', async () => {
     const env = mountComponent()
 
@@ -89,14 +95,10 @@ describe("MoEmployeeCreate.vue", () => {
     }
 
     // Fill out CPR number (the only required field on form)
-    const cpr = env.wrapper.findComponent(MoCpr)
-    cpr.setData({
-      result: {
-        cpr_no: expectedPayload["cpr_no"],
-        name: "Firstname Lastname",
-      },
+    await fillCprInput(env.wrapper, {
+      cpr_no: expectedPayload["cpr_no"],
+      name: "Firstname Lastname",
     })
-    await env.wrapper.vm.$validator.validateAll()
 
     // Submit form data
     const form = env.wrapper.find("form")
@@ -106,5 +108,31 @@ describe("MoEmployeeCreate.vue", () => {
     // payload to the "create employee" API.
     expect(env.wrapper.vm.$store.dispatch).toHaveBeenCalled()
     expect(spyServicePost).toHaveBeenCalledWith(expectedApiUrl, expectedPayload)
+  })
+
+  it("should not allow editing the name when entering a real CPR", async () => {
+    const env = mountComponent()
+
+    // Fill CPR input with "real" CPR
+    await fillCprInput(env.wrapper, { cpr_no: "0101012222" })
+    await env.wrapper.vm.$nextTick()
+
+    // Assert state of component's computed properties
+    expect(env.wrapper.vm.isPseudoCPR).toBe(false)
+    expect(env.wrapper.vm.enableCPR).toBe(true)
+    expect(env.wrapper.vm.disableManualName).toBe(true)
+  })
+
+  it('should allow editing the name when entering a "pseudo" CPR', async () => {
+    const env = mountComponent()
+
+    // Fill CPR input with "pseudo" CPR
+    await fillCprInput(env.wrapper, { cpr_no: "6101012222" })
+    await env.wrapper.vm.$nextTick()
+
+    // Assert state of component's computed properties
+    expect(env.wrapper.vm.isPseudoCPR).toBe(true)
+    expect(env.wrapper.vm.enableCPR).toBe(true)
+    expect(env.wrapper.vm.disableManualName).toBe(false)
   })
 })
