@@ -54,6 +54,27 @@ function get_by_axios(url, axios) {
   })
 }
 
+export function get_by_graphql(query) {
+  return axios({
+    method: "post",
+    baseURL: "http://localhost:5000/graphql/v3",
+    url: "",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${keycloak.token}`,
+    },
+    data: {
+      query: query,
+    },
+  })
+    .then((response) => {
+      return response.data
+    })
+    .catch((err) => {
+      console.error("Something went horribly wrong", err)
+    })
+}
+
 export default {
   get(url) {
     return get_by_axios(url, Service)
