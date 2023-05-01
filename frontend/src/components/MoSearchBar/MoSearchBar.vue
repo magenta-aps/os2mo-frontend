@@ -121,7 +121,7 @@ export default {
 
         if (vm.routeName === "OrganisationDetail") {
           if (conf.autocomplete_use_new_api) {
-            req = Autocomplete.organisations(query)
+            req = Autocomplete.organisations(query, this.atDate)
           } else {
             req = Search.organisations(org.uuid, query, this.atDate)
           }

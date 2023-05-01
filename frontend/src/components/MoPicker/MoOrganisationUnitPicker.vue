@@ -131,7 +131,7 @@ export default {
       let conf = store.getters[Conf.getters.GET_CONF_DB]
 
       if (conf.autocomplete_use_new_api) {
-        req = Autocomplete.organisations(query)
+        req = Autocomplete.organisations(query, this._atDate)
       } else {
         let org = this.$store.state.organisation
         let date = this._atDate

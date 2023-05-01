@@ -4,14 +4,19 @@
 import Service from "./HttpCommon"
 
 export default {
-  _getServiceUrl(entity, query) {
+  _getServiceUrl(entity, query, atDate = null) {
     let params = new URLSearchParams()
     params.append("query", query)
+
+    if (atDate != null) {
+      params.append("at", atDate)
+    }
+
     return `/${entity}/autocomplete/?${params}`
   },
 
-  _call(entity, query) {
-    return Service.get(this._getServiceUrl(entity, query))
+  _call(entity, query, atDate = null) {
+    return Service.get(this._getServiceUrl(entity, query, atDate))
       .then((response) => {
         return response.data.items
       })
@@ -35,8 +40,8 @@ export default {
    * @param {String} query - search query
    * @returns {Array} - a list of organisation units matching the query
    */
-  organisations(query) {
+  organisations(query, atDate = null) {
     query = query || ""
-    return this._call("ou", query)
+    return this._call("ou", query, atDate)
   },
 }
