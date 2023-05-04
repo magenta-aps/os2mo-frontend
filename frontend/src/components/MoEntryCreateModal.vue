@@ -58,6 +58,8 @@ import bModalDirective from "bootstrap-vue/es/directives/modal/modal"
 import MoAddMany from "@/components/MoAddMany/MoAddMany"
 import { MoInputDateRange } from "@/components/MoInput"
 import Engagement from "@/api/Engagement"
+import { get_by_graphql } from "@/api/HttpCommon"
+import moment from "moment"
 
 export default {
   mixins: [ValidateForm, ModalBase],
@@ -108,6 +110,7 @@ export default {
       validity: {},
       isLoading: false,
       backendValidationError: null,
+      dates: this.getMinMaxValidities,
     }
   },
 
@@ -142,7 +145,9 @@ export default {
 
     disabledDates() {
       if (this.type === "ORG_UNIT") {
-        return this.subject.validity
+        // TODO: fix variables on graphql call
+        // get_by_graphql({query: query, variables: {uuid: `${this.$store.getters["organisationUnit/GET_ORG_UNIT_UUID"]}`}}) // doesn't work
+        return this.dates
       }
     },
   },
@@ -153,6 +158,16 @@ export default {
      */
     this.$root.$on("bv::modal::hidden", () => {
       Object.assign(this.$data, this.$options.data())
+      // Since we clear data, we need to get the object again
+      switch (this.type) {
+        case "EMPLOYEE":
+          this.subject = { uuid: this.uuid }
+          break
+        case "ORG_UNIT":
+          this.subject = this.$store.getters["organisationUnit/GET_ORG_UNIT"]
+          this.getMinMaxValidities()
+          break
+      }
     })
 
     switch (this.type) {
@@ -161,6 +176,7 @@ export default {
         break
       case "ORG_UNIT":
         this.subject = this.$store.getters["organisationUnit/GET_ORG_UNIT"]
+        this.getMinMaxValidities()
         break
     }
   },
@@ -224,6 +240,36 @@ export default {
           this.createEngagementEntries(this.entries)
           break
       }
+    },
+    getMinMaxValidities() {
+      let query = `query MyQuery {
+          org_units(uuids: "${this.$store.getters["organisationUnit/GET_ORG_UNIT_UUID"]}", from_date: null, to_date: null){
+            objects {
+              validity {
+                from
+                to
+              }
+            }
+          }
+        }`
+      get_by_graphql(query).then((response) => {
+        const validities = response.data.org_units[0].objects
+        let from_validities = []
+        let to_validities = []
+        for (let i = 0; i < validities.length; i++) {
+          from_validities.push(validities[i].validity.from)
+          to_validities.push(validities[i].validity.to)
+        }
+        var min = from_validities.reduce(function (a, b) {
+          return a < b ? a : b
+        })
+        var max = to_validities.reduce(function (a, b) {
+          return a > b ? a : b
+        })
+        min = min ? moment.utc(new Date(min)).format("YYYY-MM-DD") : null
+        max = max ? moment.utc(new Date(max)).format("YYYY-MM-DD") : null
+        return (this.dates = { from: min, to: max })
+      })
     },
 
     /**
