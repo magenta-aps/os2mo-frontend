@@ -57,8 +57,7 @@ function get_by_axios(url, axios) {
 export function get_by_graphql(query) {
   return axios({
     method: "post",
-    baseURL: "http://localhost:5000/graphql/v3",
-    url: "",
+    baseURL: "/graphql/v4",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${keycloak.token}`,
