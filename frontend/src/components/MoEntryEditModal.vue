@@ -47,6 +47,8 @@ import ButtonSubmit from "./ButtonSubmit"
 import ValidateForm from "@/mixins/ValidateForm"
 import ModalBase from "@/mixins/ModalBase"
 import bModalDirective from "bootstrap-vue/es/directives/modal/modal"
+import { get_by_graphql } from "@/api/HttpCommon"
+import moment from "moment"
 
 export default {
   mixins: [ValidateForm, ModalBase],
@@ -374,6 +376,38 @@ export default {
           )
         }
       }
+    },
+
+    getMinMaxValidities() {
+      let query = `query MyQuery {
+          org_units(uuids: "${this.entry.org_unit.uuid}", from_date: null, to_date: null){
+            objects {
+              validity {
+                from
+                to
+              }
+            }
+          }
+        }`
+
+      get_by_graphql(query).then((response) => {
+        const validities = response.data.org_units[0].objects
+        let from_validities = []
+        let to_validities = []
+        for (let i = 0; i < validities.length; i++) {
+          from_validities.push(validities[i].validity.from)
+          to_validities.push(validities[i].validity.to)
+        }
+        var min = from_validities.reduce(function (a, b) {
+          return a < b ? a : b
+        })
+        var max = to_validities.reduce(function (a, b) {
+          return a > b ? a : b
+        })
+        min = min ? moment.utc(new Date(min)).format("YYYY-MM-DD") : null
+        max = max ? moment.utc(new Date(max)).format("YYYY-MM-DD") : null
+        return (this.entry.org_unit.validity = { from: min, to: max })
+      })
     },
   },
 }
