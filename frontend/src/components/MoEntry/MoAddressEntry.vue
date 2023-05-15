@@ -84,6 +84,7 @@ import MoFacetPicker from "@/components/MoPicker/MoFacetPicker"
 import { MoInputDateRange } from "@/components/MoInput"
 import MoEntryBase from "./MoEntryBase"
 import OrgUnitValidity from "@/mixins/OrgUnitValidity"
+import { get_by_graphql } from "@/api/HttpCommon"
 
 export default {
   mixins: [OrgUnitValidity],
@@ -242,7 +243,48 @@ export default {
     },
   },
 
+  methods: {
+    getMinMaxValidities() {
+      let query = `query MyQuery {
+          org_units(uuids: "${this.entry.org_unit.uuid}", from_date: null, to_date: null){
+            objects {
+              validity {
+                from
+                to
+              }
+            }
+          }
+        }`
+
+      get_by_graphql(query).then((response) => {
+        const validities = response.data.org_units[0].objects
+        let from_validities = []
+        let to_validities = []
+
+        for (let i = 0; i < validities.length; i++) {
+          from_validities.push(validities[i].validity.from)
+          to_validities.push(validities[i].validity.to)
+        }
+
+        var min = from_validities.reduce(function (a, b) {
+          return a < b ? a : b
+        })
+
+        var max = to_validities.reduce(function (a, b) {
+          return a > b ? a : b
+        })
+
+        // OBS: we dont use moment.js, since converting to UTC from whatever
+        // date is returned by our endpoint, will cause ex
+        // "2023-05-01 00:00:00" to become "2023-04-30 23:00:00", due to tz conv.
+        return (this.entry.org_unit.validity = { from: min, to: max })
+      })
+    },
+  },
+
   created() {
+    this.getMinMaxValidities()
+
     /**
      * Called synchronously after the instance is created.
      * Set entry and contactInfo to value.
