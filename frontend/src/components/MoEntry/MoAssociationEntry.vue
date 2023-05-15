@@ -94,6 +94,7 @@ import OrgUnitValidity from "@/mixins/OrgUnitValidity"
 import { Employee } from "@/store/actions/employee"
 import { mapGetters } from "vuex"
 import { Facet } from "@/store/actions/facet"
+import { filter_remove_none_published } from "@/helpers/facets"
 
 export default {
   mixins: [OrgUnitValidity],
@@ -237,17 +238,7 @@ export default {
       return facet_getter(uuid)["description"]
     },
 
-    /**
-     * Removes all non-published classes from the classData array.
-     *
-     * @param {[]object} classData
-     */
-    filter_remove_none_published(classData) {
-      if (classData === undefined) {
-        return classData
-      }
-      return classData.filter((c) => c !== null && c.published !== "IkkePubliceret")
-    },
+    filter_remove_none_published,
   },
 }
 </script>
