@@ -27,7 +27,12 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
     />
 
     <div class="form-row select-manager">
-      <mo-facet-picker facet="manager_type" v-model="entry.manager_type" required />
+      <mo-facet-picker
+        facet="manager_type"
+        v-model="entry.manager_type"
+        :filter_function="filter_remove_none_published"
+        required
+      />
 
       <mo-facet-picker facet="manager_level" v-model="entry.manager_level" required />
     </div>
@@ -55,6 +60,7 @@ import MoAddMany from "@/components/MoAddMany/MoAddMany"
 import MoEmployeePicker from "@/components/MoPicker/MoEmployeePicker"
 import MoEntryBase from "./MoEntryBase.js"
 import OrgUnitValidity from "@/mixins/OrgUnitValidity"
+import { filter_remove_none_published } from "@/helpers/facets"
 
 export default {
   mixins: [OrgUnitValidity],
@@ -125,6 +131,10 @@ export default {
       },
       deep: true,
     },
+  },
+
+  methods: {
+    filter_remove_none_published,
   },
 }
 </script>
