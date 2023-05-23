@@ -3,7 +3,7 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
   <div>
     <mo-input-date-range
       v-model="entry.validity"
-      :disabled-dates="{ orgUnitValidity, disabledDates }"
+      :disabled-dates="{ orgUnitValidity }"
     />
 
     <mo-organisation-unit-picker
@@ -63,6 +63,8 @@ import MoFacetPicker from "@/components/MoPicker/MoFacetPicker"
 import { MoInputText, MoInputDateRange } from "@/components/MoInput"
 import MoEntryBase from "./MoEntryBase"
 import FacetOrgUnitHierarchy from "@/mixins/FacetOrgUnitHierarchy"
+import { get_by_graphql } from "@/api/HttpCommon"
+import moment from "moment"
 
 export default {
   extends: MoEntryBase,
@@ -88,6 +90,11 @@ export default {
      * This boolean property able the date in create organisation component.
      */
     creatingDate: Boolean,
+
+    entryValidity: {
+      from: String,
+      to: String,
+    },
   },
 
   computed: {
@@ -97,10 +104,7 @@ export default {
       return conf.show_level
     },
     orgUnitValidity() {
-      if (this.entry.parent) {
-        return this.entry.parent.validity
-      }
-      return this.disabledDates
+      return this.entryValidity ? this.entryValidity : this.disabledDates
     },
     showTimePlanning() {
       if (this.entry.parent) {
@@ -149,7 +153,10 @@ export default {
      * Whenever orgUnit change, update newVal.
      */
     entry: {
-      handler(newVal) {
+      async handler(newVal) {
+        if (newVal.parent) {
+          await this.getMinMaxValidities(newVal.parent.uuid)
+        }
         if (newVal.user_key === undefined || newVal.user_key === "") {
           newVal.user_key = null
         }
@@ -160,6 +167,37 @@ export default {
   },
 
   methods: {
+    getMinMaxValidities(uuid) {
+      let query = `query MyQuery {
+          org_units(uuids: "${uuid}", from_date: null, to_date: null){
+            objects {
+              validity {
+                from
+                to
+              }
+            }
+          }
+        }`
+      get_by_graphql(query).then((response) => {
+        const validities = response.data.org_units[0].objects
+        let from_validities = []
+        let to_validities = []
+        for (let i = 0; i < validities.length; i++) {
+          from_validities.push(validities[i].validity.from)
+          to_validities.push(validities[i].validity.to)
+        }
+        var min = from_validities.reduce(function (a, b) {
+          return a < b ? a : b
+        })
+        var max = to_validities.reduce(function (a, b) {
+          return a > b ? a : b
+        })
+        min = min ? moment(new Date(min)).format("YYYY-MM-DD") : null
+        max = max ? moment(new Date(max)).format("YYYY-MM-DD") : null
+        return (this.entryValidity = { from: min, to: max })
+      })
+    },
+
     filter_on_owner(classData) {
       if (classData === undefined || this.hasOrgUnitBeenPicked === false) {
         return classData
