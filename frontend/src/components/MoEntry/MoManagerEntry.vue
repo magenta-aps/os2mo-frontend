@@ -34,7 +34,12 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
         required
       />
 
-      <mo-facet-picker facet="manager_level" v-model="entry.manager_level" required />
+      <mo-facet-picker
+        facet="manager_level"
+        v-model="entry.manager_level"
+        :filter_function="filter_remove_none_published"
+        required
+      />
     </div>
 
     <mo-add-many
