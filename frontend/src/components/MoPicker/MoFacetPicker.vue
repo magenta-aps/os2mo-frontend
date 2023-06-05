@@ -79,7 +79,15 @@ export default {
       let filteredValue = this.value
 
       // This corresponds to the keys in the objects in the facet picker.
-      const wantedKeys = ["example", "name", "owner", "scope", "user_key", "uuid"]
+      const wantedKeys = [
+        "example",
+        "name",
+        "owner",
+        "scope",
+        "user_key",
+        "uuid",
+        "published",
+      ]
 
       // We sort out all keys not in the facet picker objects, otherwise it
       // is not able to recognize a pre-selected value
