@@ -25,6 +25,7 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
       <mo-facet-picker
         facet="engagement_job_function"
         v-model="entry.job_function"
+        :filter_function="filter_remove_none_published"
         required
       />
 
@@ -68,6 +69,7 @@ import MoOrganisationUnitPicker from "@/components/MoPicker/MoOrganisationUnitPi
 import MoFacetPicker from "@/components/MoPicker/MoFacetPicker"
 import MoEntryBase from "./MoEntryBase"
 import OrgUnitValidity from "@/mixins/OrgUnitValidity"
+import { filter_remove_none_published } from "@/helpers/facets"
 
 export default {
   mixins: [OrgUnitValidity],
@@ -136,6 +138,10 @@ export default {
     validity(newVal) {
       this.entry.validity = newVal
     },
+  },
+
+  methods: {
+    filter_remove_none_published,
   },
 }
 </script>
