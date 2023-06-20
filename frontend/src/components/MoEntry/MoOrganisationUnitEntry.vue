@@ -41,7 +41,7 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
       <mo-facet-picker
         facet="org_unit_type"
         v-model="entry.org_unit_type"
-        :filter_function="filter_on_owner"
+        :filter_function="filter_org_unit_type"
         required
       />
 
@@ -65,6 +65,7 @@ import MoEntryBase from "./MoEntryBase"
 import FacetOrgUnitHierarchy from "@/mixins/FacetOrgUnitHierarchy"
 import { get_by_graphql } from "@/api/HttpCommon"
 import moment from "moment"
+import { filter_remove_none_published } from "@/helpers/facets"
 
 export default {
   extends: MoEntryBase,
@@ -206,6 +207,10 @@ export default {
         (clazz) =>
           clazz.owner === null || this.getOrgUnitAncestors.includes(clazz.owner)
       )
+    },
+    filter_org_unit_type(classData) {
+      classData = this.filter_on_owner(classData)
+      return filter_remove_none_published(classData)
     },
   },
 }
