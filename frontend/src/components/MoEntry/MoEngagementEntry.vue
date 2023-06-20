@@ -32,6 +32,7 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
       <mo-facet-picker
         facet="engagement_type"
         v-model="entry.engagement_type"
+        :filter_function="filter_remove_none_published"
         required
       />
 
