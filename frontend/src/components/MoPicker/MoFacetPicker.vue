@@ -31,7 +31,6 @@ export default {
     facet: { type: String, required: true },
     required: Boolean,
     disabled: { type: Boolean, default: false },
-    filter_function: { type: Function, default: null },
   },
 
   data() {
@@ -46,10 +45,7 @@ export default {
     },
     classData() {
       let class_data = this.facetData.classes
-      if (this.filter_function) {
-        return this.filter_function(class_data)
-      }
-      return class_data
+      return this.filter_remove_none_published(class_data)
     },
     sortedOptions() {
       return sortBy(this.classData, "name")
@@ -99,6 +95,15 @@ export default {
 
       this.internalValue = filteredValue
     }
+  },
+
+  methods: {
+    filter_remove_none_published(classData) {
+      if (classData === undefined) {
+        return classData
+      }
+      return classData.filter((c) => c !== null && c.published !== "IkkePubliceret")
+    },
   },
 }
 </script>
