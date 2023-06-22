@@ -41,12 +41,7 @@ SPDX-FileCopyrightText: 2018-2022 Magenta ApS SPDX-License-Identifier: MPL-2.0
       <mo-input-primary-check class="col checkbox" v-model="entry.primary" />
     </div>
 
-    <mo-facet-picker
-      :facet="jobFunctionFacet"
-      v-model="entry.job_function"
-      :filter_function="filter_remove_none_published"
-      required
-    />
+    <mo-facet-picker :facet="jobFunctionFacet" v-model="entry.job_function" required />
   </div>
 </template>
 
@@ -67,7 +62,6 @@ import OrgUnitValidity from "@/mixins/OrgUnitValidity"
 import { Employee } from "@/store/actions/employee"
 import { mapGetters } from "vuex"
 import { Facet } from "@/store/actions/facet"
-import { filter_remove_none_published } from "@/helpers/facets"
 
 export default {
   mixins: [OrgUnitValidity],
@@ -215,8 +209,6 @@ export default {
       let facet_getter = this.$store.getters[Facet.getters.GET_FACET]
       return facet_getter(uuid)["description"]
     },
-
-    filter_remove_none_published,
   },
 }
 </script>

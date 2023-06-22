@@ -65,7 +65,6 @@ import MoEntryBase from "./MoEntryBase"
 import FacetOrgUnitHierarchy from "@/mixins/FacetOrgUnitHierarchy"
 import { get_by_graphql } from "@/api/HttpCommon"
 import moment from "moment"
-import { filter_remove_none_published } from "@/helpers/facets"
 
 export default {
   extends: MoEntryBase,
@@ -209,8 +208,7 @@ export default {
       )
     },
     filter_org_unit_type(classData) {
-      classData = this.filter_on_owner(classData)
-      return filter_remove_none_published(classData)
+      return this.filter_on_owner(classData)
     },
   },
 }
