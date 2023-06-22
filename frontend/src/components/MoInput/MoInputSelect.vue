@@ -3,19 +3,22 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
   <div class="form-group">
     <label v-if="hasLabel" :for="identifier">{{ label }}</label>
     <select
-      v-if="hasOptions"
       class="form-control"
+      v-model="internalValue"
+      v-validate="{ required: isRequired }"
       :name="identifier"
       :id="identifier"
       :ref="identifier"
       :data-vv-as="label"
-      v-model="internalValue"
       :disabled="disabled"
-      v-validate="{ required: isRequired }"
     >
       <option disabled selected>{{ label }}</option>
-      <option v-for="(o, index) in options" :key="index" :value="o">
+      <option v-if="hasOptions" v-for="(o, index) in options" :key="index" :value="o">
         {{ display_method(o) }}
+      </option>
+
+      <option disabled v-if="!hasOptions">
+        {{ this.$t(`common.no_data`) }}
       </option>
     </select>
 
