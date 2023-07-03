@@ -117,7 +117,7 @@ export default {
     return Service.post("/details/edit", editData)
       .then((response) => {
         EventBus.$emit(Events.EMPLOYEE_CHANGED)
-        return response.data
+        return response
       })
       .catch((error) => {
         store.commit("log/newError", { type: "ERROR", value: error.response.data })

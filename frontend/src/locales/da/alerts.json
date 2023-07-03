@@ -13,8 +13,8 @@
     "ORGANISATION_RENAME": "Organisationsenheden {original_name} er blevet omdøbt til {new_name}.",
     "ORGANISATION_MOVE": "Organisationsenheden {name} er blevet flyttet til {parent}.",
     "ORGANISATION_TERMINATE": "Organisationsenheden {name} er blevet afsluttet pr. {terminate}.",
-    "ORGANISATION_EXTERNAL_FUNCTION": "{message}"
-
+    "ORGANISATION_EXTERNAL_FUNCTION": "{message}",
+    "NOOP_REQUEST": "Ingen ændringer fundet på {type}."
   },
   "error": {
     "E_UNAUTHORIZED": "Brugernavn eller adgangskode er forkert",
