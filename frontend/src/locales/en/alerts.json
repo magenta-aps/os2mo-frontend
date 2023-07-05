@@ -13,8 +13,8 @@
     "ORGANISATION_RENAME": "The organizational unit {original_name} has been renamed {new_name}.",
     "ORGANISATION_MOVE": "The organizational unit {name} has been moved to {parent}.",
     "ORGANISATION_TERMINATE": "The organizational unit {name} has been disabled on {terminate}.",
-    "ORGANISATION_EXTERNAL_FUNCTION": "{message}."
-
+    "ORGANISATION_EXTERNAL_FUNCTION": "{message}.",
+    "NOOP_REQUEST": "No changes found on {type}."
   },
   "error": {
     "E_UNAUTHORIZED": "Username or password is incorrect.",

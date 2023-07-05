@@ -194,7 +194,7 @@ export default {
 
   edit(edit) {
     return this.editEntry(edit).then((response) => {
-      return response.data
+      return response
     })
   },
 

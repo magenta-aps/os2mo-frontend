@@ -284,11 +284,27 @@ export default {
     },
 
     handle(response) {
+      let headers = new Headers(response.headers)
+      response = response.data
       this.isLoading = false
 
-      // If the MO response is null, it indicates that the POST request did not
-      // make any actual changes. Just close the modal then.
-      if (response === null) {
+      if (
+        headers.get("x-deprecated-lora-noop-change-do-not-use") === "1" ||
+        response === null
+      ) {
+        // TODO: Improve message, this one is very generic
+        this.$store.commit(
+          "log/newWorkLog",
+          {
+            type: "NOOP_REQUEST",
+            contentType: this.contentType,
+            value: {
+              type: this.$tc(`shared.${this.contentType}`, 1),
+              name: this.entry.name,
+            },
+          },
+          { root: true }
+        )
         this.$refs[this.nameId].hide()
         this.$emit("submit")
         return

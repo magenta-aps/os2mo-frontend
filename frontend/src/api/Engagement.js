@@ -17,7 +17,6 @@ export default {
       })
       .catch((error) => {
         store.commit("log/newError", { type: "ERROR", value: error.response })
-        console.log("mw", error.response.data)
         return error.response.data
       })
   },
@@ -29,7 +28,7 @@ export default {
     return Service.post("/details/edit", edit)
       .then((response) => {
         EventBus.$emit(Events.ENGAGEMENT_CHANGED)
-        return response.data
+        return response
       })
       .catch((error) => {
         store.commit("log/newError", { type: "ERROR", value: error.response.data })
