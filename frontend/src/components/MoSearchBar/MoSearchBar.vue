@@ -143,6 +143,40 @@ export default {
     selected(item) {
       if (item.uuid == null) return
       this.items = []
+
+      // Check if search-result-item have "validity"-attr and update
+      // "atDate"-vue-store accordingly, so we can view the selected item
+      // when navigating to it
+      if (item.validity) {
+        const currentAtDate = new Date(this.atDate)
+        const itemFrom = new Date(item.validity.from)
+        const itemTo = item.validity.to ? new Date(item.validity.to) : undefined
+
+        // Current "atDate" is outside the "from/to"-interval
+        if (
+          !(currentAtDate >= itemFrom && (itemTo === null || currentAtDate <= itemTo))
+        ) {
+          let newAtDate = undefined
+          if (itemTo && currentAtDate > itemTo) {
+            newAtDate = itemTo // When "to" is in the past
+          } else if (currentAtDate < itemFrom) {
+            newAtDate = itemFrom // When "from" is in the future
+          }
+
+          this.atDate = !newAtDate
+            ? this.atDate
+            : newAtDate
+                .toLocaleDateString("da-DK", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                })
+                .split(".")
+                .reverse()
+                .join("-")
+        }
+      }
+
       this.$router.push({ name: this.routeName, params: { uuid: item.uuid } })
     },
   },
