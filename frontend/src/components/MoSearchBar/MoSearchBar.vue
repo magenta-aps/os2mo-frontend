@@ -113,7 +113,7 @@ export default {
 
         if (vm.routeName === "EmployeeDetail") {
           if (conf.autocomplete_use_new_api) {
-            req = Autocomplete.employees(query)
+            req = Autocomplete.employees(query, this.atDate)
           } else {
             req = Search.employees(org.uuid, query)
           }
@@ -163,6 +163,8 @@ export default {
             newAtDate = itemFrom // When "from" is in the future
           }
 
+          // FYI: JS Date.toLocaleDateString() returns the format: "dd.mm.yyyy", for "da-DK".
+          // To get desired format "yyyy-mm-dd", we need to reverse the array and replace "." with "-".
           this.atDate = !newAtDate
             ? this.atDate
             : newAtDate
