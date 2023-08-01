@@ -30,9 +30,9 @@ export default {
    * @param {String} query - search query
    * @returns {Array} - a list of employees matching the query
    */
-  employees(query) {
+  employees(query, atDate = null) {
     query = query || ""
-    return this._call("e", query)
+    return this._call("e", query, atDate)
   },
 
   /**
