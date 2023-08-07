@@ -2,6 +2,7 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
 <template>
   <mo-input-select
     class="col"
+    v-if="!(hideOnEmpty && sortedOptions.length === 0)"
     v-model="internalValue"
     :label="labelText"
     :options="sortedOptions"
@@ -31,6 +32,7 @@ export default {
     facet: { type: String, required: true },
     required: Boolean,
     disabled: { type: Boolean, default: false },
+    hideOnEmpty: { type: Boolean, default: false },
   },
 
   data() {
