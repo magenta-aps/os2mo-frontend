@@ -24,6 +24,7 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
         v-if="showOrgUnitLevel"
         facet="org_unit_level"
         v-model="entry.org_unit_level"
+        :hideOnEmpty="true"
       />
     </div>
 
