@@ -5,9 +5,6 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
       <div class="input-group justify-content-md-center">
         <h3>{{ $t("input_fields.search_for_name_or_cpr") }}</h3>
       </div>
-      <div class="input-group input-group-lg justify-content-md-center">
-        <mo-search-bar hide-date-input />
-      </div>
     </div>
   </div>
 </template>
