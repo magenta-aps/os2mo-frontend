@@ -3,7 +3,7 @@ SPDX-FileCopyrightText: 2017-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
   <div class="row" id="employee">
     <div class="col-12">
       <router-view :key="route.params.uuid" />
-      <mo-log />
+      <mo-log v-if="route.path.replace(/\/$/, '') != '/medarbejder/liste'" />
     </div>
     <mo-employee-workflows />
   </div>
