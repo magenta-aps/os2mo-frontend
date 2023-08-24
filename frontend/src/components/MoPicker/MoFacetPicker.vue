@@ -32,6 +32,7 @@ export default {
     facet: { type: String, required: true },
     required: Boolean,
     disabled: { type: Boolean, default: false },
+    filter_function: { type: Function, default: null },
   },
 
   data() {
@@ -45,8 +46,8 @@ export default {
       return this.$store.getters[Facet.getters.GET_FACET](this.facet)
     },
     classData() {
-      let class_data = this.facetData.classes
-      return this.filter_remove_none_published(class_data)
+      let class_data = this.filter_remove_none_published(this.facetData.classes)
+      return this.filter_function ? this.filter_function(class_data) : class_data
     },
     sortedOptions() {
       return sortBy(this.classData, "name")
