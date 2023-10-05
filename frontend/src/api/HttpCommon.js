@@ -57,14 +57,12 @@ function get_by_axios(url, axios) {
 export function get_by_graphql(query) {
   return axios({
     method: "post",
-    baseURL: "/graphql/v4",
+    baseURL: "/graphql/v18",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${keycloak.token}`,
     },
-    data: {
-      query: query,
-    },
+    data: JSON.stringify(query),
   })
     .then((response) => {
       return response.data

@@ -5,6 +5,7 @@ SPDX-FileCopyrightText: 2021 Magenta ApS SPDX-License-Identifier: MPL-2.0
     :getResultValue="getResultValue"
     :autoSelect="true"
     :debounceTime="1000"
+    @update="update"
     @submit="onSubmit"
   >
     <template
@@ -53,6 +54,23 @@ SPDX-FileCopyrightText: 2021 Magenta ApS SPDX-License-Identifier: MPL-2.0
             <span v-if="show_employee_birthday"
               >({{ getEmployeeBirthday(result) }})</span
             >
+            <icon
+              v-if="isLoading && use_graphql_search"
+              class="text-primary"
+              name="spinner"
+              scale="1"
+              spin
+            />
+            <div v-if="use_graphql_search" v-for="obj in extra" :key="obj.id">
+              <small
+                v-if="obj.name === result.name"
+                v-for="(address, addressIndex) in obj.addresses"
+                :key="addressIndex"
+              >
+                <span> {{ address.value }} <br /> </span>
+                <span v-if="address.value2"> {{ address.value2 }} <br /> </span>
+              </small>
+            </div>
             <div v-for="item in result.attrs" :key="item.uuid">
               <small>
                 <b>{{ item.title }}</b>
@@ -69,6 +87,7 @@ SPDX-FileCopyrightText: 2021 Magenta ApS SPDX-License-Identifier: MPL-2.0
 <script>
 import Autocomplete from "@trevoreyre/autocomplete-vue"
 import "@trevoreyre/autocomplete-vue/dist/style.css"
+import { get_by_graphql } from "../../api/HttpCommon"
 
 export default {
   name: "MoAutocomplete",
@@ -88,9 +107,22 @@ export default {
       focused: false,
       value: "",
       results: [],
+      use_graphql_search: this.$store.getters["conf/GET_CONF_DB"].use_graphql_search,
+      extra: [],
       show_employee_birthday:
         this.$store.getters["conf/GET_CONF_DB"].show_employee_birthday_in_search,
+      routeName: "",
+      isLoading: false,
     }
+  },
+
+  watch: {
+    /**
+     * Whenever route change update.
+     */
+    $route(to) {
+      this.getRouteName(to)
+    },
   },
 
   computed: {
@@ -99,9 +131,128 @@ export default {
     },
   },
 
+  created() {
+    /**
+     * Called synchronously after the instance is created.
+     * Get route name.
+     */
+    this.getRouteName(this.$route)
+  },
+
   methods: {
     handleFocus() {
       this.focused = true
+    },
+    getRouteName(route) {
+      if (route.name.indexOf("Organisation") > -1) {
+        this.routeName = "org_units"
+      }
+      if (route.name.indexOf("Employee") > -1) {
+        this.routeName = "employees"
+      }
+    },
+    update(results) {
+      if (this.use_graphql_search) {
+        if (results.length) {
+          this.isLoading = true
+          let employeeRoute = this.routeName == "employees"
+          let uuids = results.map((result) => result.uuid)
+          let query = `query getLazyData($uuids: [UUID!], $isEmployeeRoute: Boolean!) {
+            ...employee_or_org
+          }
+
+          fragment employee_or_org on Query {
+            employees(filter: {uuids: $uuids}) @include(if: $isEmployeeRoute) {
+              objects {
+                objects {
+                  name
+                  addresses {
+                    resolve {
+                      ... on DefaultAddress {
+                        __typename
+                        value
+                      }
+                      ... on DARAddress {
+                        __typename
+                        name
+                      }
+                      ... on MultifieldAddress {
+                        __typename
+                        value
+                        value2
+                      }
+                    }
+                  }
+                  itusers {
+                    user_key
+                  }
+                }
+              }
+            }
+            org_units(filter: {uuids: $uuids}) @skip(if: $isEmployeeRoute) {
+              objects {
+                objects {
+                  name
+                  addresses {
+                    resolve {
+                      ... on DefaultAddress {
+                        __typename
+                        value
+                      }
+                      ... on DARAddress {
+                        __typename
+                        name
+                      }
+                      ... on MultifieldAddress {
+                        __typename
+                        value
+                        value2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }`
+          get_by_graphql({
+            query: query,
+            variables: {
+              uuids: uuids,
+              isEmployeeRoute: employeeRoute,
+            },
+          }).then((response) => {
+            const result = response.data[this.routeName].objects.map((item) => {
+              const object = item.objects[0]
+              const { name, addresses = [], itusers = [] } = object
+
+              const extractedAddresses = addresses.map((address) => {
+                const { resolve } = address
+                if (resolve.__typename === "DefaultAddress") {
+                  return { value: resolve.value }
+                }
+                if (resolve.__typename === "DARAddress") {
+                  return { value: resolve.name }
+                }
+                if (resolve.__typename === "MultifieldAddress") {
+                  return { value: resolve.value, value2: resolve.value2 }
+                }
+              })
+
+              const extractedItUsers = itusers.map((ituser) => ({
+                value: ituser.user_key,
+              }))
+
+              const data = {
+                name,
+                addresses: [...extractedAddresses, ...extractedItUsers],
+              }
+              return data
+            })
+            this.isLoading = false
+            this.extra = result
+          })
+        }
+      }
     },
 
     handleBlur() {

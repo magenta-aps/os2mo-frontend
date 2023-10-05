@@ -242,18 +242,23 @@ export default {
       }
     },
     getMinMaxValidities() {
-      let query = `query MyQuery {
-          org_units(uuids: "${this.$store.getters["organisationUnit/GET_ORG_UNIT_UUID"]}", from_date: null, to_date: null){
+      let query = `query MyQuery($uuid: [UUID!]) {
+          org_units(filter: { uuids: $uuid, from_date: null, to_date: null }){
             objects {
-              validity {
-                from
-                to
+              objects {
+                validity {
+                  from
+                  to
+                }
               }
             }
           }
         }`
-      get_by_graphql(query).then((response) => {
-        const validities = response.data.org_units[0].objects
+      get_by_graphql({
+        query,
+        variables: { uuid: this.$store.getters["organisationUnit/GET_ORG_UNIT_UUID"] },
+      }).then((response) => {
+        const validities = response.data.org_units.objects[0].objects
         let from_validities = []
         let to_validities = []
         for (let i = 0; i < validities.length; i++) {

@@ -112,7 +112,11 @@ export default {
         }
 
         if (vm.routeName === "EmployeeDetail") {
-          if (conf.autocomplete_use_new_api) {
+          if (conf.use_graphql_search) {
+            req = Autocomplete.employeesGraphQL(query, this.atDate).then((response) => {
+              return response.data.employees.objects.map((v) => v.objects[0])
+            })
+          } else if (conf.autocomplete_use_new_api) {
             req = Autocomplete.employees(query, this.atDate)
           } else {
             req = Search.employees(org.uuid, query)
@@ -120,7 +124,13 @@ export default {
         }
 
         if (vm.routeName === "OrganisationDetail") {
-          if (conf.autocomplete_use_new_api) {
+          if (conf.use_graphql_search) {
+            req = Autocomplete.organisationsGraphQL(query, this.atDate).then(
+              (response) => {
+                return response.data.org_units.objects.map((v) => v.objects[0])
+              }
+            )
+          } else if (conf.autocomplete_use_new_api) {
             req = Autocomplete.organisations(query, this.atDate)
           } else {
             req = Search.organisations(org.uuid, query, this.atDate)
