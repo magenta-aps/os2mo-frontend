@@ -112,8 +112,9 @@ export default {
       : "Nobody"
     this.shortcuts = MoNavbar.getShortcuts()
 
-    this.$store.dispatch(Conf.actions.SET_NAVLINKS).then((response) => {
-      this.navlinks = this.$store.getters[Conf.getters.GET_NAVLINKS]
+    this.$store.dispatch(Conf.actions.SET_CONF_DB).then((response) => {
+      let conf = this.$store.getters["conf/GET_CONF_DB"]
+      this.navlinks = conf.navlinks
     })
   },
 
