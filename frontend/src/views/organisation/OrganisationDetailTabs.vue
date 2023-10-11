@@ -1,6 +1,6 @@
 SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
 <template>
-  <div v-if="orgUnitInfo.user_settings.orgunit">
+  <div>
     <b-tabs v-model="tabIndex" lazy>
       <b-tab
         @click="navigateToTab('#org-unit')"
@@ -86,7 +86,7 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
         @click="navigateToTab('#roller')"
         href="#roller"
         :title="$t('tabs.organisation.roles')"
-        :disabled="!orgUnitInfo.user_settings.orgunit.show_roles"
+        :disabled="!conf.show_roles"
       >
         <mo-table-detail
           type="ORG_UNIT"
@@ -118,7 +118,7 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
         @click="navigateToTab('#kle')"
         href="#kle"
         :title="$t('tabs.organisation.kle')"
-        :disabled="!orgUnitInfo.user_settings.orgunit.show_kle"
+        :disabled="!conf.show_kle"
       >
         <mo-table-detail
           type="ORG_UNIT"
@@ -164,7 +164,7 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
         @click="navigateToTab('#engagement_association')"
         href="#engagement_association"
         :title="$t('tabs.organisation.engagement_association')"
-        v-if="orgUnitInfo.user_settings.orgunit.show_engagement_hyperlink"
+        v-if="conf.show_engagement_hyperlink"
       >
         <mo-table-detail
           type="ORG_UNIT"
@@ -215,6 +215,7 @@ export default {
     uuid: { type: String, required: true },
     orgUnitInfo: Object,
     content: Object,
+    conf: Object,
 
     /**
      * This Boolean property indicates the timemachine output.
@@ -307,11 +308,11 @@ export default {
         { label: "parent", data: "parent" },
       ]
 
-      if (this.orgUnitInfo.user_settings.orgunit.show_time_planning) {
+      if (this.conf.show_time_planning) {
         columns.splice(2, 0, { label: "time_planning", data: "time_planning" })
       }
 
-      if (this.orgUnitInfo.user_settings.orgunit.show_level) {
+      if (this.conf.show_level) {
         columns.splice(2, 0, { label: "org_unit_level", data: "org_unit_level" })
       }
 
@@ -321,12 +322,11 @@ export default {
     engagement() {
       let dyn_columns = [{ label: "person", data: "person" }]
 
-      if (this.orgUnitInfo.user_settings.orgunit.show_primary_engagement) {
+      if (this.conf.show_primary_engagement) {
         dyn_columns.push({ label: "primary", data: "primary" })
       }
       dyn_columns = dyn_columns.concat(columns)
-      let extension_labels =
-        this.orgUnitInfo.user_settings.orgunit.extension_field_ui_labels.split(",")
+      let extension_labels = this.conf.extension_field_ui_labels.split(",")
       dyn_columns = dyn_columns.concat(generate_extension_columns(extension_labels))
       return dyn_columns
     },
@@ -338,7 +338,7 @@ export default {
         { label: "substitute", data: "substitute" },
       ]
 
-      if (this.orgUnitInfo.user_settings.orgunit.show_primary_association) {
+      if (this.conf.show_primary_association) {
         columns.splice(2, 0, { label: "primary", data: "primary" })
       }
 

@@ -97,34 +97,19 @@ export default {
   },
 
   computed: {
-    globalOrgUnitLevel() {
-      let conf = this.$store.getters["conf/GET_CONF_DB"]
-
-      return conf.show_level
-    },
     orgUnitValidity() {
       return this.entryValidity ? this.entryValidity : this.disabledDates
     },
     showTimePlanning() {
-      if (this.entry.parent) {
-        return this.entry.parent.user_settings.orgunit.show_time_planning
-      } else if (this.entry.user_settings) {
-        return this.entry.user_settings.orgunit.show_time_planning
-      }
-      return false
+      let conf = this.$store.getters["conf/GET_CONF_DB"]
+      return conf.show_time_planning
     },
     hasOrgUnitBeenPicked() {
       return this.entry.parent !== undefined && this.entry.parent !== null
     },
     showOrgUnitLevel() {
-      if (this.hasOrgUnitBeenPicked) {
-        if (this.entry.parent) {
-          return this.entry.parent.user_settings.orgunit.show_level
-        }
-      } else if (this.entry.user_settings) {
-        return this.entry.user_settings.orgunit.show_level
-      }
-      return this.globalOrgUnitLevel
+      let conf = this.$store.getters["conf/GET_CONF_DB"]
+      return conf.show_level
     },
     showUserKey() {
       return !this.isEdit

@@ -14,7 +14,6 @@ const defaultState = () => {
     org_uuid: undefined,
     parents: [],
     location: undefined,
-    user_settings: {},
     details: {},
     validity: {},
     isLoading: false,
@@ -60,13 +59,14 @@ const actions = {
     return response.data
   },
 
-  [_orgUnit.actions.SET_DETAIL]({ state, commit }, payload) {
+  [_orgUnit.actions.SET_DETAIL]({ state, commit, rootState, rootGetters }, payload) {
     payload.validity = payload.validity || "present"
     let uuid = payload.uuid || state.uuid
     let atDate = payload.atDate
     let inheritFlag = ""
     if (atDate instanceof Date) atDate = atDate.toISOString().split("T")[0]
-    if (payload.detail === "manager" && state.user_settings.orgunit.inherit_manager) {
+    let inheritManager = rootGetters["conf/GET_CONF_DB"].inherit_manager
+    if (payload.detail === "manager" && inheritManager) {
       inheritFlag = "&inherit_manager=1"
     } else if (payload.detail === "owner") {
       inheritFlag = "&inherit_owner=1"
@@ -96,7 +96,6 @@ const mutations = {
     state.org = payload.org
     state.org_uuid = payload.org.uuid
     state.location = payload.location
-    state.user_settings = payload.user_settings
     state.validity = payload.validity
     state.parents = []
 

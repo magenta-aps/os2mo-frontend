@@ -9,15 +9,12 @@ SPDX-FileCopyrightText: 2017-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
         </h4>
 
         <div class="row">
-          <div class="col user-settings" v-if="orgUnit.user_settings.orgunit">
-            <div class="card-text" v-if="orgUnit.user_settings.orgunit.show_location">
+          <div class="col user-settings">
+            <div class="card-text" v-if="conf.show_location">
               {{ $t("common.placement") }}:
               <span class="orgunit-location">{{ orgUnit.location }}</span>
             </div>
-            <div
-              class="user-key card-text mb-3"
-              v-if="orgUnit.user_settings.orgunit.show_user_key"
-            >
+            <div class="user-key card-text mb-3" v-if="conf.show_user_key">
               {{ $t("common.unit_number") }}:
               <span class="orgunit-user_key">{{ orgUnit.user_key }}</span>
             </div>
@@ -32,6 +29,7 @@ SPDX-FileCopyrightText: 2017-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
           :uuid="route.params.uuid"
           :org-unit-info="orgUnit"
           :content="orgUnitDetails"
+          :conf="conf"
           @show="loadContent($event)"
         />
       </div>
@@ -87,6 +85,10 @@ export default {
     ...mapState({
       route: "route",
     }),
+
+    conf() {
+      return this.$store.getters["conf/GET_CONF_DB"]
+    },
 
     orgUnitIntegration() {
       return this.$store.getters["conf/GET_CONF_DB"].show_org_unit_button
