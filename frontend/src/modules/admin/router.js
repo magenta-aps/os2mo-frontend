@@ -4,7 +4,7 @@
 const AdminPanel = () => import("./")
 
 export default {
-  path: "/admin",
+  path: "/new/admin",
   name: "AdminPanel",
   component: AdminPanel,
 }
