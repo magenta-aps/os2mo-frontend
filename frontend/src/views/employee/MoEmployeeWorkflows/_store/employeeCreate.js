@@ -11,7 +11,6 @@ const defaultState = () => {
     engagement: [],
     address: [],
     association: [],
-    role: [],
     itSystem: [],
     manager: [],
     owner: [],
@@ -28,7 +27,6 @@ const actions = {
       state.engagement,
       state.address,
       state.association,
-      state.role,
       state.itSystem,
       state.manager
     )

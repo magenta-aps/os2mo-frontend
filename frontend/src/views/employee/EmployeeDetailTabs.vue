@@ -52,22 +52,6 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
         />
       </b-tab>
 
-      <b-tab
-        @click="navigateToTab('#roller')"
-        href="#roller"
-        :title="$t('tabs.employee.roles')"
-      >
-        <mo-table-detail
-          type="EMPLOYEE"
-          :uuid="uuid"
-          :content="content['role']"
-          content-type="role"
-          :columns="role"
-          @show="loadContent('role', $event)"
-          :entry-component="!hideActions ? components.role : undefined"
-        />
-      </b-tab>
-
       <b-tab @click="navigateToTab('#it')" href="#it" :title="$t('tabs.employee.it')">
         <mo-table-detail
           type="EMPLOYEE"
@@ -173,7 +157,6 @@ import {
   MoEmployeeEntry,
   MoEngagementEntry,
   MoEmployeeAddressEntry,
-  MoRoleEntry,
   MoItSystemEntry,
   MoAssociationEntry,
   MoItAssociationEntry,
@@ -217,7 +200,6 @@ export default {
         "#medarbejder",
         "#engagementer",
         "#adresser",
-        "#roller",
         "#it",
         "#tilknytninger",
         "#ittilknytninger",
@@ -228,13 +210,9 @@ export default {
       currentDetail: "employee",
       _atDate: undefined,
       /**
-       * The leave, it, address, engagement, association, role, manager component value.
+       * The leave, it, address, engagement, association, manager component value.
        * Used to detect changes and restore the value for columns.
        */
-      role: [
-        { label: "org_unit", data: "org_unit" },
-        { label: "role_type", data: "role_type" },
-      ],
       it: [
         { label: "it_system", data: "itsystem" },
         { label: "user_key", data: null, field: "user_key" },
@@ -272,7 +250,7 @@ export default {
       ],
 
       /**
-       * The MoEngagementEntry, MoAddressEntry, MoRoleEntry, MoItSystemEntry,
+       * The MoEngagementEntry, MoAddressEntry, MoItSystemEntry,
        * MoAssociationEntry, MoLeaveEntry, MoManagerEntry component.
        * Used to add the components in the tabs.
        */
@@ -280,7 +258,6 @@ export default {
         employee: MoEmployeeEntry,
         engagement: MoEngagementEntry,
         address: MoEmployeeAddressEntry,
-        role: MoRoleEntry,
         it: MoItSystemEntry,
         association: MoAssociationEntry,
         itassociation: MoItAssociationEntry,

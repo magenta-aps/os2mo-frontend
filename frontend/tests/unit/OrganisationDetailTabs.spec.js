@@ -36,7 +36,6 @@ describe("OrganisationDetailTabs.vue", () => {
       orgUnitInfo: {
         user_settings: {
           org_unit: {
-            show_roles: true,
             show_kle: true,
             show_time_planning: true,
             show_level: true,

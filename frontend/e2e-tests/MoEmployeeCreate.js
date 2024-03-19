@@ -15,8 +15,6 @@ const checkbox = dialog.find('input[data-vv-as="checkbox"]')
 const cprInput = dialog.find('input[data-vv-as="CPR nummer"]')
 
 // Engagement
-const engagementCheckbox = dialog.find(".container")
-
 const parentEngagementInput = dialog.find('input[data-vv-as="Angiv enhed"]')
 
 const engagementBoarder = dialog.find(".btn-engagement")
@@ -62,12 +60,6 @@ const associationTypeSelect = dialog.find(
   '.select-association select[data-vv-as="Tilknytningsrolle"]'
 )
 const associationTypeOption = associationTypeSelect.find("option")
-
-// Role
-const parentRoleInput = dialog.find('.unit-role input[data-vv-as="Angiv enhed"]')
-
-const roleTypeSelect = dialog.find('.select-role select[data-vv-as="Rolletype"]')
-const roleTypeOption = roleTypeSelect.find("option")
 
 // IT System
 const itSystemSelect = dialog.find('.select-itSystem select[data-vv-as="IT systemer"]')
@@ -182,15 +174,6 @@ test("Workflow: create employee", async (t) => {
     .click(primaryAssociationSelect)
     .click(primaryAssociationOption.withText("Sekundær"))
 
-    // Role
-    .click(dialog.find(".btn-role .btn-outline-success"))
-
-    .click(parentRoleInput)
-    .click(dialog.find(".unit-role span.tree-anchor"))
-
-    .click(roleTypeSelect)
-    .click(roleTypeOption.withText("Tillidsrepræsentant"))
-
     // IT System
     .click(dialog.find(".btn-itSystem .btn-outline-success"))
 
@@ -229,74 +212,6 @@ test("Workflow: create employee", async (t) => {
     .typeText(searchField.find("input"), "sig")
     .expect(searchFieldItem.withText("Signe Kristensen").visible)
     .ok()
-})
-
-test("Workflow: create employee with role only", async (t) => {
-  let today = moment()
-
-  await t
-    .hover("#mo-workflow", { offsetX: 10, offsetY: 10 })
-    .click(".btn-employee-create")
-
-    .expect(dialog.exists)
-    .ok("Opened dialog")
-
-    // CPR Number
-    .typeText(dialog.find('input[data-vv-as="CPR nummer"]'), "2003920009")
-    .click(checkbox)
-    .expect(checkbox.checked)
-    .ok()
-
-    // Engagement
-    .click(engagementButton)
-
-    .click(parentEngagementInput)
-    .click(dialog.find("span.tree-anchor"))
-
-    .click(jobFunctionEngagementSelect)
-    .click(jobFunctionEngagementOption.withText("Skolepsykolog"))
-
-    .click(engagementTypeSelect)
-    .click(engagementTypeOption.withText("Ansat"))
-
-    .click(fromInput)
-    .hover(
-      dialog.find(".vdp-datepicker .day:not(.blank)").withText(today.date().toString())
-    )
-    .click(
-      dialog.find(".vdp-datepicker .day:not(.blank)").withText(today.date().toString())
-    )
-    .expect(fromInput.value)
-    .eql(today.format("DD-MM-YYYY"))
-
-    .click(primaryEngagementSelect)
-    .click(primaryEngagementOption.withText("Sekundær"))
-    // Role
-    .click(dialog.find(".btn-role .btn-outline-success"))
-
-    .click(parentRoleInput)
-    .click(dialog.find(".unit-role span.tree-anchor"))
-
-    .click(roleTypeSelect)
-    .click(roleTypeOption.withText("Tillidsrepræsentant"))
-
-    // Submit button
-    .click(dialog.find(".btn-primary"))
-
-    .expect(dialog.exists)
-    .notOk()
-
-    .expect(VueSelector("MoLog").find(".alert").nth(-1).innerText)
-    .match(/Medarbejderen (.+) er blevet oprettet under (.+)\./)
-    .expect(Selector(".card-title").textContent)
-    .match(/Oliver Jensen \(200392-0009\)/)
-    .expect(VueSelector("bTabButtonHelper").exists)
-    .ok()
-    .expect(VueSelector("bTabButtonHelper").withText("Roller").exists)
-    .ok()
-    .click(VueSelector("bTabButtonHelper").withText("Roller"))
-    .expect(Selector("ul.role_type-name").textContent)
-    .match(/Tillidsrepræsentant/)
 })
 
 test("Workflow: create employee with association to unit lacking address", async (t) => {

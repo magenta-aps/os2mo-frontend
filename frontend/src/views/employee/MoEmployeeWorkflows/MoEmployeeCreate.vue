@@ -55,14 +55,6 @@ SPDX-FileCopyrightText: 2017-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
     />
 
     <mo-add-many
-      class="btn-role mt-3"
-      v-model="role"
-      :entry-component="entry.role"
-      :label="$tc('workflows.employee.labels.role', 2)"
-      validity-hidden
-    />
-
-    <mo-add-many
       class="btn-itSystem mt-3"
       v-model="itSystem"
       :entry-component="entry.it"
@@ -113,7 +105,6 @@ import {
   MoEmployeeAddressEntry,
   MoAssociationEntry,
   MoEngagementEntry,
-  MoRoleEntry,
   MoItSystemEntry,
   MoManagerEntry,
   MoOwnerEntry,
@@ -149,15 +140,14 @@ export default {
       isLoading: false,
 
       /**
-       * The entry - address, association, role, it, manager component.
-       * Used to add MoAddressEntry, MoAssociationEntry, MoRoleEntry,
-       * MoItSystemEntry, MoManagerEntry component in `<mo-add-many/>`.
+       * The entry - address, association, it, manager component. Used to add
+       * MoAddressEntry, MoAssociationEntry, MoItSystemEntry, MoManagerEntry
+       * component in `<mo-add-many/>`.
        */
       entry: {
         engagement: MoEngagementEntry,
         address: MoEmployeeAddressEntry,
         association: MoAssociationEntry,
-        role: MoRoleEntry,
         it: MoItSystemEntry,
         manager: MoManagerEntry,
         owner: MoOwnerEntry,
@@ -174,7 +164,6 @@ export default {
       "engagement",
       "address",
       "association",
-      "role",
       "itSystem",
       "manager",
       "owner",

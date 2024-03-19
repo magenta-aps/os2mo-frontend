@@ -15,7 +15,6 @@ import MoManagerEntry from "./MoManagerEntry.vue"
 import MoOwnerEntry from "./MoOwnerEntry.vue"
 import MoOrganisationUnitEntry from "./MoOrganisationUnitEntry.vue"
 import MoOrgUnitAddressEntry from "./MoOrgUnitAddressEntry.vue"
-import MoRoleEntry from "./MoRoleEntry.vue"
 
 export {
   MoAddressEntry,
@@ -30,7 +29,6 @@ export {
   MoManagerEntry,
   MoOrganisationUnitEntry,
   MoOrgUnitAddressEntry,
-  MoRoleEntry,
   MoEngagementAssociationEntry,
   MoOwnerEntry,
 }
