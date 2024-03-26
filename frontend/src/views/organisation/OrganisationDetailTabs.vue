@@ -83,22 +83,6 @@ SPDX-FileCopyrightText: 2018-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
       </b-tab>
 
       <b-tab
-        @click="navigateToTab('#roller')"
-        href="#roller"
-        :title="$t('tabs.organisation.roles')"
-        :disabled="!orgUnitInfo.user_settings.orgunit.show_roles"
-      >
-        <mo-table-detail
-          type="ORG_UNIT"
-          :uuid="uuid"
-          :content="content['role']"
-          content-type="role"
-          :columns="role"
-          @show="loadContent('role', $event)"
-        />
-      </b-tab>
-
-      <b-tab
         @click="navigateToTab('#ledere')"
         href="#ledere"
         :title="$t('tabs.organisation.managers')"
@@ -231,7 +215,6 @@ export default {
         "#engagementer",
         "#tilknytninger",
         "#it",
-        "#roller",
         "#ledere",
         "#kle",
         "#relateret",
@@ -241,17 +224,13 @@ export default {
       currentDetail: "org_unit",
       _atDate: undefined,
       /**
-       * The address, engagement, association, role, manager component value.
+       * The address, engagement, association, manager component value.
        * Used to detect changes and restore the value for columns.
        */
       address: [
         { label: "address_type", data: "address_type" },
         { label: "visibility", data: "visibility" },
         { label: "address", data: null },
-      ],
-      role: [
-        { label: "person", data: "person" },
-        { label: "role_type", data: "role_type" },
       ],
       it: [
         { label: "it_system", data: "itsystem" },

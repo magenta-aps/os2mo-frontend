@@ -11,8 +11,7 @@
       "engagement": "Employment",
       "it_system": "@:shared.it_system",
       "manager": "@:shared.manager",
-      "owner": "@:shared.owner",
-      "role": "@:shared.role"
+      "owner": "@:shared.owner"
     },
     "messages": {
       "following_will_be_terminated": "The following will be terminated for the employee:"
