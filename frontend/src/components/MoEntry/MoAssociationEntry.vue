@@ -131,7 +131,7 @@ export default {
     substituteRoles() {
       let conf = this.$store.getters["conf/GET_CONF_DB"]
       if ("substitute_roles" in conf) {
-        return conf.substitute_roles.split(",").filter((elem) => elem !== "")
+        return conf.substitute_roles.filter((elem) => elem !== "")
       } else {
         return []
       }
