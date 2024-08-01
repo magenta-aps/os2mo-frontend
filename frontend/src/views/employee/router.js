@@ -8,7 +8,7 @@ const EmployeeDetail = () =>
   import(/* webpackChunkName: "employee" */ "./EmployeeDetail")
 
 export default {
-  path: "/medarbejder",
+  path: "/old/medarbejder",
   name: "Employee",
   component: Employee,
   redirect: { name: "EmployeeList" },

@@ -10,7 +10,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const _moduleNames = ["organisationMapper", "query", "insight"]
 
 module.exports = {
-  assetsDir: "static",
+  assetsDir: "old/static",
   lintOnSave: true,
   runtimeCompiler: true, // allows the template option in components
   chainWebpack: (config) => {

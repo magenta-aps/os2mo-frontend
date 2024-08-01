@@ -8,7 +8,7 @@ const OrganisationDetail = () =>
   import(/* webpackChunkName: "organisation" */ "./OrganisationDetail")
 
 export default {
-  path: "/organisation",
+  path: "/old/organisation",
   name: "Organisation",
   component: Organisation,
   redirect: { name: "OrganisationLandingPage" },

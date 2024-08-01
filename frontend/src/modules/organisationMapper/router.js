@@ -4,7 +4,7 @@
 const OrganisationMapper = () => import("./")
 
 export default {
-  path: "/organisationssammenkobling",
+  path: "/old/organisationssammenkobling",
   name: "OrganisationMapper",
   component: OrganisationMapper,
 }

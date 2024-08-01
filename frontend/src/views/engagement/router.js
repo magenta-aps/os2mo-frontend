@@ -6,7 +6,7 @@ const EngagementDetail = () =>
   import(/* webpackChunkName: "engagement" */ "./EngagementDetail")
 
 export default {
-  path: "/engagement",
+  path: "/old/engagement",
   name: "Engagement",
   component: Engagement,
   redirect: { name: "EngagementList" },
