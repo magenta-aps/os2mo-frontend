@@ -2,7 +2,7 @@ SPDX-FileCopyrightText: 2019-2020 Magenta ApS SPDX-License-Identifier: MPL-2.0
 <template>
   <a
     type="button"
-    href="/new/admin"
+    href="/admin"
     aria-label="Administration"
     class="btn btn-link text-white"
   >

@@ -4,7 +4,7 @@
 const Insight = () => import("./")
 
 export default {
-  path: "/indsigt",
+  path: "/old/indsigt",
   name: "Insight",
   component: Insight,
 }

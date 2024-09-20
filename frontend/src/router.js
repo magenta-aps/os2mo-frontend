@@ -13,14 +13,14 @@ const PageNotFound = () => import("@/views/PageNotFound")
 
 const GlobalRouter = [
   {
-    path: "",
+    path: "/old/",
     name: "Landing",
     component: Landing,
   },
 ]
 
 let BaseRouter = {
-  path: "/",
+  path: "/old/",
   name: "Base",
   component: MoBase,
   children: [employeeRouter, organisationRouter, engagementRouter],
